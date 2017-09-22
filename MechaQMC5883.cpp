@@ -28,7 +28,6 @@ void MechaQMC5883::init(){
 
 void MechaQMC5883::setMode(uint16_t mode,uint16_t odr,uint16_t rng,uint16_t osr){
   WriteReg(0x09,mode|odr|rng|osr);
-  Serial.println(mode|odr|rng|osr,HEX);
 }
 
 
@@ -47,4 +46,20 @@ void MechaQMC5883::read(uint16_t* x,uint16_t* y,uint16_t* z){
   *y |= Wire.read() << 8; //MSB z
   *z = Wire.read(); //LSB y
   *z |= Wire.read() << 8; //MSB y
+}
+
+void MechaQMC5883::read(uint16_t* x,uint16_t* y,uint16_t* z,int* a){
+  read(x,y,z);
+  *a = azimuth(y,x);
+}
+
+void MechaQMC5883::read(uint16_t* x,uint16_t* y,uint16_t* z,float* a){
+  read(x,y,z);
+  *a = azimuth(y,x);
+}
+
+
+float MechaQMC5883::azimuth(uint16_t *a, uint16_t *b){
+  float azimuth = atan2((int)*a,(int)*b) * 180.0/PI;
+  return azimuth < 0?360 + azimuth:azimuth;
 }

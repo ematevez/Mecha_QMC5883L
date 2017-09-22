@@ -1,4 +1,4 @@
-# Mechasolution QMC5883 Library
+# Mechasolution QMC5883L Library
 
 [한글 설명 바로가기](https://github.com/keepworking/Mecha_QMC5883/blob/master/README_KO.md)
 
@@ -77,6 +77,30 @@ void loop(){
   int x,y,z;
 
   qmc.read(&x,&y,&z);
+}
+```
+
+and we can get azimuth too.
+
+```cpp
+void loop(){
+  int x,y,z;
+  int a;
+  //float a; //can get float value
+
+  qmc.read(&x,&y,&z,&a);
+}
+```
+
+also can claculate azimuth you want
+
+```cpp
+void loop(){
+  int x,y,z;
+  int a;
+
+  qmc.read(&x,&y,&z);
+  a = qmc.azimuth(&y,&x);
 }
 ```
 
